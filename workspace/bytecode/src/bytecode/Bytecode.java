@@ -31,7 +31,10 @@ import soot.baf.BafBody;
 import soot.baf.Inst;
 import soot.baf.PushInst;
 import soot.baf.StaticInvokeInst;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.options.Options;
 import soot.util.Chain;
@@ -49,14 +52,14 @@ import soot.util.cfgcmd.CFGToDotGraph;
 
 public class Bytecode extends BodyTransformer {
 
-	private static final String packToJoin = "jtp.bb";
+	private static final String packToJoin = "jtp";
 	private static final String phaseSubname = "printcfg";
 	private static final String phaseFullname = packToJoin + '.' + phaseSubname;
 	private static final String altClassPathOptionName = "alt-class-path";
 	private static final String graphTypeOptionName = "graph-type";
 	private static final String defaultGraph = "BriefUnitGraph";
 	private static final String irOptionName = "ir";
-	private static final String defaultIR = "baf";
+	private static final String defaultIR = "jimple";
 	private static final String multipageOptionName = "multipages";
 	private static final String briefLabelOptionName = "brief";
 	private CFGGraphType graphtype;
@@ -88,7 +91,7 @@ public class Bytecode extends BodyTransformer {
 
 				String cur_class = meth.getDeclaringClass().toString();
 				Body body = ir.getBody((JimpleBody) b);
-				
+
 				// create a jasmin file. This file will contain bytecodes for
 				// all the members of this class
 				if (!jasminFileGenerated) {
@@ -152,49 +155,51 @@ public class Bytecode extends BodyTransformer {
 				Iterator<Unit> stmtIt = units.snapshotIterator();
 				List<Unit> bafLines = Lists.newArrayList(stmtIt);
 
-				HashMap<Inst, String> baftojasmin = new HashMap<Inst, String>();
-
-				int i_baf = bafLines.size() - 1;
-				int i_jas = endIndex;
+				int i_baf = 0;
+				int i_jas = startIndex;
+				String toInsert = "";
 				while (true) {
-					Inst bafstmt = (Inst) bafLines.get(i_baf);
-					String jasstmt = null;
+					// collect jasmin variables till label is found
 					while (true) {
-						jasstmt = jasminLines.get(i_jas);
-						if (jasstmt.trim().startsWith("label") || jasstmt.trim().startsWith("default")) {
-							i_jas--;
-							continue;
+						System.out.println(i_jas);
+						String jasstmt = jasminLines.get(i_jas);
+						i_jas++;
+						if (jasstmt.startsWith("label")) {
+							break;
 						}
-						break;
+						if (i_jas >= endIndex)
+							break;
+						toInsert +=  jasstmt.trim() + "\n";
 					}
 
-					// enough instrumenting
-					if (jasstmt.trim().startsWith(".limit"))
-						break;
+					while (true) {
+						Stmt bafstmt = (Stmt) bafLines.get(i_baf);
+						i_baf++;
+						if (bafstmt.getBoxesPointingToThis().size() != 0 || (i_baf == bafLines.size() && !(i_baf > bafLines.size()))) {
+							if(bafstmt.toString().contains("@caughtexception"))
+								;//break;
+							InvokeExpr incExpr = Jimple.v().newStaticInvokeExpr(printbytecode.makeRef(),
+									StringConstant.v(toInsert));
+							Stmt incStmt = Jimple.v().newInvokeStmt(incExpr);
+							body.getUnits().insertBeforeNoRedirect(incStmt, bafstmt);
+							
+							if(bafstmt.getBoxesPointingToThis().size() != 0)
+								break;
+						}
+						if (i_baf >= bafLines.size())
+							break;
+					}
 					
+					toInsert = "";
 					
-					PushInst pi = Baf.v().newPushInst(StringConstant.v(jasstmt.toString().trim()));
-					StaticInvokeInst incExpr = Baf.v().newStaticInvokeInst(printbytecode.makeRef());
-
-					body.getUnits().insertBefore(pi, bafstmt);
-					body.getUnits().insertBefore(incExpr, bafstmt);
-					
-					System.out.println("JasStmt " + i_jas + ": " + jasstmt.toString().trim());
-					System.out.println("BafStmt " + i_baf + ": " + bafstmt.toString());
-					System.out.println("");
-					
-					i_jas--;
-					i_baf--;
-					
-					if (i_baf < 0)
+					if (i_baf >= bafLines.size())
 						break;
 				}
-				
-				b = body;
-				System.out.println(body.toString());
 
-				//System.out.println("******/Statements in this IR******");
-				
+				System.out.println(b.toString());
+
+				// System.out.println("******/Statements in this IR******");
+
 			}
 		}
 

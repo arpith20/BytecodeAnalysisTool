@@ -161,37 +161,38 @@ public class Bytecode extends BodyTransformer {
 				while (true) {
 					// collect jasmin variables till label is found
 					while (true) {
-						System.out.println(i_jas);
 						String jasstmt = jasminLines.get(i_jas);
 						i_jas++;
-						if (jasstmt.startsWith("label")) {
+						if (jasstmt.startsWith("label") || jasstmt.trim().startsWith("goto")
+								|| jasstmt.trim().startsWith("if_")) {
 							break;
 						}
 						if (i_jas >= endIndex)
 							break;
-						toInsert +=  jasstmt.trim() + "\n";
+						toInsert += jasstmt.trim() + "\n";
 					}
 
 					while (true) {
 						Stmt bafstmt = (Stmt) bafLines.get(i_baf);
 						i_baf++;
-						if (bafstmt.getBoxesPointingToThis().size() != 0 || (i_baf == bafLines.size() && !(i_baf > bafLines.size()))) {
+						if (bafstmt.branches() || bafstmt.getBoxesPointingToThis().size() != 0
+								|| (i_baf == bafLines.size() && !(i_baf > bafLines.size()))) {
 							if(bafstmt.toString().contains("@caughtexception"))
-								;//break;
+								break;
 							InvokeExpr incExpr = Jimple.v().newStaticInvokeExpr(printbytecode.makeRef(),
 									StringConstant.v(toInsert));
 							Stmt incStmt = Jimple.v().newInvokeStmt(incExpr);
 							body.getUnits().insertBeforeNoRedirect(incStmt, bafstmt);
-							
-							if(bafstmt.getBoxesPointingToThis().size() != 0)
+
+							if (bafstmt.branches() || bafstmt.getBoxesPointingToThis().size() != 0)
 								break;
 						}
 						if (i_baf >= bafLines.size())
 							break;
 					}
-					
+
 					toInsert = "";
-					
+
 					if (i_baf >= bafLines.size())
 						break;
 				}

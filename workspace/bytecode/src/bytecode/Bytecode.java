@@ -193,21 +193,20 @@ public class Bytecode extends BodyTransformer {
 								body.getUnits().insertBeforeNoRedirect(incStmt, bafstmt);
 							}
 
-						
 							// handles the case where a unit is both target and
 							// a branch
 							if (bafstmt.branches() && bafstmt.getBoxesPointingToThis().size() != 0) {
-								if(again == false){
+								if (again == false) {
 									i_baf--;
 									again = true;
 									break;
-								}else
+								} else
 									again = false;
 								InvokeExpr incExpr = Jimple.v().newStaticInvokeExpr(printbytecode.makeRef(),
 										StringConstant.v(toInsert));
 								Stmt incStmt = Jimple.v().newInvokeStmt(incExpr);
 								body.getUnits().insertBefore(incStmt, bafstmt);
-								
+
 								break;
 							}
 

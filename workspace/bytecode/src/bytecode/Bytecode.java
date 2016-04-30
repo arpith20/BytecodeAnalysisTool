@@ -2,12 +2,17 @@ package bytecode;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import soot.Body;
 import soot.BodyTransformer;
@@ -32,7 +37,7 @@ import soot.util.cfgcmd.CFGToDotGraph;
  * Arpith K
  * April 29th 2016
  * Ununtu 16.04
- * Java 8
+ * Java 8 is required
  */
 
 public class Bytecode extends BodyTransformer {
@@ -79,6 +84,8 @@ public class Bytecode extends BodyTransformer {
 				String cur_class = meth.getDeclaringClass().toString();
 				Body body = ir.getBody((JimpleBody) b);
 
+				// create a jasmin file. This file will contain bytecodes for
+				// all the members of this class
 				if (!jasminFileGenerated) {
 					Process p;
 					try {
@@ -98,17 +105,50 @@ public class Bytecode extends BodyTransformer {
 					}
 				}
 
-				// System.out.println("******IR******");
-				// System.out.println(body.toString());
-				// System.out.println("******/IR******");
+				// determine the name of method under observation
 				String bytecodeMethod = meth.getBytecodeSignature().split(" ")[1];
 				bytecodeMethod = bytecodeMethod.substring(0, bytecodeMethod.length() - 1);
+
+				// Read the jasmin file into an ArrayList
+				String fileName = "sootOutput/" + cur_class + ".jasmin";
+				List<String> jasminLines = new ArrayList<>();
+				try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+
+					jasminLines = stream.collect(Collectors.toList());
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				// determine the satrt and end indexe of the method under
+				// analysis in jasmin file
+				int startIndex = 0;
+				int endIndex = 0;
+				int i;
+				for (i = 0; i < jasminLines.size(); i++) {
+					String cur_line = jasminLines.get(i);
+					if (!cur_line.startsWith(".method"))
+						continue;
+					if (!cur_line.contains(bytecodeMethod))
+						continue;
+					startIndex = i + 1;
+					i = startIndex;
+					cur_line = jasminLines.get(i);
+					while (!cur_line.equals(".end method")) {
+						System.out.println(cur_line);
+
+						i++;
+						cur_line = jasminLines.get(i);
+					}
+					endIndex = i - 1;
+					break;
+				}
 
 				System.out.println("******" + bytecodeMethod + " IR******");
 				Chain<Unit> units = body.getUnits();
 				Iterator<Unit> stmtIt = units.snapshotIterator();
 
-				int i = 0;
+				i = 0;
 				while (stmtIt.hasNext()) {
 					Inst stmt = (Inst) stmtIt.next();
 

@@ -26,10 +26,14 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Transform;
 import soot.Unit;
+import soot.baf.Baf;
+import soot.baf.BafBody;
 import soot.baf.Inst;
+import soot.baf.PushInst;
+import soot.baf.StaticInvokeInst;
 import soot.jimple.JimpleBody;
+import soot.jimple.StringConstant;
 import soot.options.Options;
-import soot.tagkit.Tag;
 import soot.util.Chain;
 import soot.util.cfgcmd.AltClassLoader;
 import soot.util.cfgcmd.CFGGraphType;
@@ -45,7 +49,7 @@ import soot.util.cfgcmd.CFGToDotGraph;
 
 public class Bytecode extends BodyTransformer {
 
-	private static final String packToJoin = "jtp";
+	private static final String packToJoin = "jtp.bb";
 	private static final String phaseSubname = "printcfg";
 	private static final String phaseFullname = packToJoin + '.' + phaseSubname;
 	private static final String altClassPathOptionName = "alt-class-path";
@@ -70,12 +74,12 @@ public class Bytecode extends BodyTransformer {
 		initialize(options);
 
 		synchronized (this) {
-			
+
 			if (printClass == null) {
 				printClass = Scene.v().loadClassAndSupport("bytecode.PrintBytecode");
 				printbytecode = printClass.getMethod("void printBytecode(java.lang.String)");
 			}
-			
+
 			// method currently under observation
 			SootMethod meth = b.getMethod();
 
@@ -84,7 +88,7 @@ public class Bytecode extends BodyTransformer {
 
 				String cur_class = meth.getDeclaringClass().toString();
 				Body body = ir.getBody((JimpleBody) b);
-
+				
 				// create a jasmin file. This file will contain bytecodes for
 				// all the members of this class
 				if (!jasminFileGenerated) {
@@ -147,38 +151,50 @@ public class Bytecode extends BodyTransformer {
 				Chain<Unit> units = body.getUnits();
 				Iterator<Unit> stmtIt = units.snapshotIterator();
 				List<Unit> bafLines = Lists.newArrayList(stmtIt);
-				
+
 				HashMap<Inst, String> baftojasmin = new HashMap<Inst, String>();
 
-				int i_baf = bafLines.size()-1;
+				int i_baf = bafLines.size() - 1;
 				int i_jas = endIndex;
-				while(true){
+				while (true) {
 					Inst bafstmt = (Inst) bafLines.get(i_baf);
 					String jasstmt = null;
-					while(true){
+					while (true) {
 						jasstmt = jasminLines.get(i_jas);
-						if(jasstmt.trim().startsWith("label") || jasstmt.trim().startsWith("default")){
+						if (jasstmt.trim().startsWith("label") || jasstmt.trim().startsWith("default")) {
 							i_jas--;
 							continue;
 						}
 						break;
 					}
-					
+
 					// enough instrumenting
-					if(jasstmt.trim().startsWith(".limit"))
+					if (jasstmt.trim().startsWith(".limit"))
 						break;
+					
+					
+					PushInst pi = Baf.v().newPushInst(StringConstant.v(jasstmt.toString().trim()));
+					StaticInvokeInst incExpr = Baf.v().newStaticInvokeInst(printbytecode.makeRef());
+
+					body.getUnits().insertBefore(pi, bafstmt);
+					body.getUnits().insertBefore(incExpr, bafstmt);
 					
 					System.out.println("JasStmt " + i_jas + ": " + jasstmt.toString().trim());
 					System.out.println("BafStmt " + i_baf + ": " + bafstmt.toString());
 					System.out.println("");
+					
 					i_jas--;
 					i_baf--;
-					if(i_baf < 0)
+					
+					if (i_baf < 0)
 						break;
 				}
 				
-				System.out.println("******/Statements in this IR******");
+				b = body;
+				System.out.println(body.toString());
 
+				//System.out.println("******/Statements in this IR******");
+				
 			}
 		}
 
@@ -235,7 +251,7 @@ public class Bytecode extends BodyTransformer {
 			 * Required for functioning of PrintBytecode.java
 			 */
 			Scene.v().addBasicClass("bytecode.PrintBytecode");
-	
+
 			// Start analysis
 			soot.Main.main(args);
 		}

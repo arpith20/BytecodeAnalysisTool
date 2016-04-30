@@ -22,6 +22,7 @@ import soot.G;
 import soot.PackManager;
 import soot.PhaseOptions;
 import soot.Scene;
+import soot.SootClass;
 import soot.SootMethod;
 import soot.Transform;
 import soot.Unit;
@@ -61,22 +62,20 @@ public class Bytecode extends BodyTransformer {
 
 	boolean jasminFileGenerated = false;
 
-	class baftoJasmin {
-		Inst baf;
-		String jasmin;
-
-		baftoJasmin() {
-			baf = null;
-			jasmin = null;
-		}
-	}
+	SootClass printClass = null;
+	SootMethod printbytecode;
 
 	protected void internalTransform(Body b, String phaseName, Map options) {
 		// initialize various mapping required for CFGViewer
 		initialize(options);
 
 		synchronized (this) {
-
+			
+			if (printClass == null) {
+				printClass = Scene.v().loadClassAndSupport("bytecode.PrintBytecode");
+				printbytecode = printClass.getMethod("void printBytecode(java.lang.String)");
+			}
+			
 			// method currently under observation
 			SootMethod meth = b.getMethod();
 
@@ -165,6 +164,10 @@ public class Bytecode extends BodyTransformer {
 						break;
 					}
 					
+					// enough instrumenting
+					if(jasstmt.trim().startsWith(".limit"))
+						break;
+					
 					System.out.println("JasStmt " + i_jas + ": " + jasstmt.toString().trim());
 					System.out.println("BafStmt " + i_baf + ": " + bafstmt.toString());
 					System.out.println("");
@@ -229,25 +232,10 @@ public class Bytecode extends BodyTransformer {
 		} else {
 
 			/*
-			 * Required for functioning of MyCounter.java
+			 * Required for functioning of PrintBytecode.java
 			 */
-			Scene.v().addBasicClass("xyz.arpith.pathprofiler.MyCounter");
-			Scene.v().addBasicClass("java.util.HashMap");
-			Scene.v().addBasicClass("java.util.HashMap$Node");
-			Scene.v().addBasicClass("java.util.function.Function");
-			Scene.v().addBasicClass("java.util.function.BiFunction");
-			Scene.v().addBasicClass("java.util.function.BiConsumer");
-			Scene.v().addBasicClass("java.util.HashMap$TreeNode");
-			Scene.v().addBasicClass("java.lang.invoke.SerializedLambda");
-			Scene.v().addBasicClass("java.util.function.Predicate");
-			Scene.v().addBasicClass("java.util.stream.Stream");
-			Scene.v().addBasicClass("java.util.Iterator");
-			Scene.v().addBasicClass("java.util.function.Consumer");
-			Scene.v().addBasicClass("java.io.OutputStreamWriter");
-			Scene.v().addBasicClass("java.io.BufferedWriter");
-			Scene.v().addBasicClass("java.io.FileNotFoundException");
-			Scene.v().addBasicClass("java.util.Formatter");
-
+			Scene.v().addBasicClass("bytecode.PrintBytecode");
+	
 			// Start analysis
 			soot.Main.main(args);
 		}

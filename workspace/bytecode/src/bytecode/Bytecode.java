@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.collect.Lists;
+
 import soot.Body;
 import soot.BodyTransformer;
 import soot.G;
@@ -135,8 +137,6 @@ public class Bytecode extends BodyTransformer {
 					i = startIndex;
 					cur_line = jasminLines.get(i);
 					while (!cur_line.equals(".end method")) {
-						System.out.println(cur_line);
-
 						i++;
 						cur_line = jasminLines.get(i);
 					}
@@ -147,17 +147,33 @@ public class Bytecode extends BodyTransformer {
 				System.out.println("******" + bytecodeMethod + " IR******");
 				Chain<Unit> units = body.getUnits();
 				Iterator<Unit> stmtIt = units.snapshotIterator();
+				List<Unit> bafLines = Lists.newArrayList(stmtIt);
+				
+				HashMap<Inst, String> baftojasmin = new HashMap<Inst, String>();
 
-				i = 0;
-				while (stmtIt.hasNext()) {
-					Inst stmt = (Inst) stmtIt.next();
-
-					List<Tag> tags = stmt.getTags();
-					for (Tag t : tags) {
-						System.out.println(t.getName());
+				int i_baf = bafLines.size()-1;
+				int i_jas = endIndex;
+				while(true){
+					Inst bafstmt = (Inst) bafLines.get(i_baf);
+					String jasstmt = null;
+					while(true){
+						jasstmt = jasminLines.get(i_jas);
+						if(jasstmt.trim().startsWith("label") || jasstmt.trim().startsWith("default")){
+							i_jas--;
+							continue;
+						}
+						break;
 					}
-					System.out.println("Stmt " + i++ + ": " + stmt.toString());
+					
+					System.out.println("JasStmt " + i_jas + ": " + jasstmt.toString().trim());
+					System.out.println("BafStmt " + i_baf + ": " + bafstmt.toString());
+					System.out.println("");
+					i_jas--;
+					i_baf--;
+					if(i_baf < 0)
+						break;
 				}
+				
 				System.out.println("******/Statements in this IR******");
 
 			}

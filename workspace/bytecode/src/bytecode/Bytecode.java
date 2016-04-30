@@ -158,6 +158,7 @@ public class Bytecode extends BodyTransformer {
 				int i_baf = 0;
 				int i_jas = startIndex;
 				String toInsert = "";
+				boolean again = false;
 				while (true) {
 					// collect jasmin variables till label is found
 					while (true) {
@@ -165,24 +166,50 @@ public class Bytecode extends BodyTransformer {
 						i_jas++;
 						if (jasstmt.startsWith("label") || jasstmt.trim().startsWith("goto")
 								|| jasstmt.trim().startsWith("if_")) {
+							if (!jasstmt.startsWith("label"))
+								toInsert += jasstmt.trim() + "\n";
 							break;
 						}
-						if (i_jas >= endIndex)
+						if (i_jas >= endIndex) {
+							toInsert += jasstmt.trim() + "\n";
 							break;
+						}
 						toInsert += jasstmt.trim() + "\n";
 					}
 
 					while (true) {
 						Stmt bafstmt = (Stmt) bafLines.get(i_baf);
 						i_baf++;
+
 						if (bafstmt.branches() || bafstmt.getBoxesPointingToThis().size() != 0
 								|| (i_baf == bafLines.size() && !(i_baf > bafLines.size()))) {
-							if(bafstmt.toString().contains("@caughtexception"))
+							if (bafstmt.toString().contains("@caughtexception"))
 								break;
-							InvokeExpr incExpr = Jimple.v().newStaticInvokeExpr(printbytecode.makeRef(),
-									StringConstant.v(toInsert));
-							Stmt incStmt = Jimple.v().newInvokeStmt(incExpr);
-							body.getUnits().insertBeforeNoRedirect(incStmt, bafstmt);
+
+							if (again == false) {
+								InvokeExpr incExpr = Jimple.v().newStaticInvokeExpr(printbytecode.makeRef(),
+										StringConstant.v(toInsert));
+								Stmt incStmt = Jimple.v().newInvokeStmt(incExpr);
+								body.getUnits().insertBeforeNoRedirect(incStmt, bafstmt);
+							}
+
+						
+							// handles the case where a unit is both target and
+							// a branch
+							if (bafstmt.branches() && bafstmt.getBoxesPointingToThis().size() != 0) {
+								if(again == false){
+									i_baf--;
+									again = true;
+									break;
+								}else
+									again = false;
+								InvokeExpr incExpr = Jimple.v().newStaticInvokeExpr(printbytecode.makeRef(),
+										StringConstant.v(toInsert));
+								Stmt incStmt = Jimple.v().newInvokeStmt(incExpr);
+								body.getUnits().insertBefore(incStmt, bafstmt);
+								
+								break;
+							}
 
 							if (bafstmt.branches() || bafstmt.getBoxesPointingToThis().size() != 0)
 								break;
@@ -195,6 +222,9 @@ public class Bytecode extends BodyTransformer {
 
 					if (i_baf >= bafLines.size())
 						break;
+					if (i_jas >= endIndex) {
+						break;
+					}
 				}
 
 				System.out.println(b.toString());

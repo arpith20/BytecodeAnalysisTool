@@ -1,0 +1,551 @@
+.source HelloWorld.java
+.class  HelloWorld
+.super java/lang/Object
+
+.method  <init>()V
+    .limit stack 1
+    .limit locals 1
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    return
+.end method
+
+.method public static main([Ljava/lang/String;)V
+.throws java.lang.Exception
+    .limit stack 2
+    .limit locals 1
+    new HelloWorld
+    astore_0
+    aload_0
+    invokespecial HelloWorld/<init>()V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Simple if"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    iconst_2
+    invokevirtual HelloWorld/simpleif(I)V
+    aload_0
+    iconst_2
+    invokevirtual HelloWorld/simpleif(I)V
+    aload_0
+    iconst_1
+    invokevirtual HelloWorld/simpleif(I)V
+    aload_0
+    iconst_1
+    invokevirtual HelloWorld/simpleif(I)V
+    aload_0
+    iconst_1
+    invokevirtual HelloWorld/simpleif(I)V
+    aload_0
+    iconst_1
+    invokevirtual HelloWorld/simpleif(I)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "main2"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    invokevirtual HelloWorld/main2()V
+    aload_0
+    invokevirtual HelloWorld/main2()V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "main3"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    invokevirtual HelloWorld/main3()V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "multi_Ret"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    iconst_2
+    invokevirtual HelloWorld/multi_ret(I)I
+    pop
+    aload_0
+    iconst_2
+    invokevirtual HelloWorld/multi_ret(I)I
+    pop
+    aload_0
+    sipush 190
+    invokevirtual HelloWorld/multi_ret(I)I
+    pop
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "onw while"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    iconst_2
+    invokevirtual HelloWorld/one_while(I)V
+    aload_0
+    iconst_1
+    invokevirtual HelloWorld/one_while(I)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "two while"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    iconst_2
+    invokevirtual HelloWorld/two_while(I)V
+    aload_0
+    iconst_1
+    invokevirtual HelloWorld/two_while(I)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "nested while"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    iconst_4
+    invokevirtual HelloWorld/nested_while(I)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "month"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    iconst_3
+    invokevirtual HelloWorld/func_month(I)V
+    aload_0
+    iconst_4
+    invokevirtual HelloWorld/func_month(I)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "another example"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    aload_0
+    iconst_5
+    invokevirtual HelloWorld/another_example(I)V
+    return
+.end method
+
+.method public forloop()V
+    .limit stack 2
+    .limit locals 2
+    iconst_2
+    istore_0
+label5:
+    iload_0
+    sipush 1000
+    if_icmpge label0
+    iconst_2
+    istore_1
+label4:
+    iload_1
+    iload_0
+    if_icmpge label1
+    iload_0
+    iload_1
+    irem
+    ifne label2
+    goto label3
+label2:
+    iinc 1 1
+    goto label4
+label1:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_0
+    invokevirtual java/io/PrintStream/println(I)V
+label3:
+    iinc 0 1
+    goto label5
+label0:
+    return
+.end method
+
+.method public simpleif(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_2
+    if_icmpne label0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    goto label1
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+label1:
+    return
+.end method
+
+.method public exception_func()V
+.catch java/io/FileNotFoundException from label1 to label2 using label3
+    .limit stack 5
+    .limit locals 1
+label1:
+    new java/io/PrintStream
+    dup
+    new java/io/FileOutputStream
+    dup
+    ldc "output.txt"
+    invokespecial java/io/FileOutputStream/<init>(Ljava/lang/String;)V
+    invokespecial java/io/PrintStream/<init>(Ljava/io/OutputStream;)V
+    invokestatic java/lang/System/setOut(Ljava/io/PrintStream;)V
+label2:
+    goto label0
+label3:
+    invokevirtual java/io/FileNotFoundException/printStackTrace()V
+label0:
+    return
+.end method
+
+.method public simpleif_exit(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_2
+    if_icmpne label0
+    iload_1
+    invokestatic java/lang/System/exit(I)V
+    goto label1
+label0:
+    iload_1
+    iconst_3
+    if_icmpne label1
+    iload_1
+    invokestatic java/lang/System/exit(I)V
+label1:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+
+.method public main2()V
+    .limit stack 3
+    .limit locals 2
+    new java/util/Scanner
+    astore_0
+    aload_0
+    getstatic java/lang/System/in Ljava/io/InputStream;
+    invokespecial java/util/Scanner/<init>(Ljava/io/InputStream;)V
+    aload_0
+    invokevirtual java/util/Scanner/nextInt()I
+    istore_1
+    aload_0
+    invokevirtual java/util/Scanner/nextInt()I
+    iconst_1
+    if_icmpne label0
+    iload_1
+    ifne label1
+    iinc 1 1
+    goto label0
+label1:
+    iload_1
+    iconst_1
+    if_icmpne label0
+    iinc 1 2
+label0:
+    iload_1
+    iconst_3
+    iadd
+    istore_0
+    iload_0
+    iconst_3
+    if_icmpne label2
+    iinc 0 4
+label2:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_0
+    iconst_5
+    iadd
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+
+.method public main3()V
+    .limit stack 3
+    .limit locals 2
+    new java/util/Scanner
+    astore_0
+    aload_0
+    getstatic java/lang/System/in Ljava/io/InputStream;
+    invokespecial java/util/Scanner/<init>(Ljava/io/InputStream;)V
+    aload_0
+    invokevirtual java/util/Scanner/nextInt()I
+    istore_1
+    aload_0
+    invokevirtual java/util/Scanner/nextInt()I
+    iconst_1
+    if_icmpne label0
+    iload_1
+    ifne label1
+    iinc 1 1
+    goto label2
+label1:
+    iload_1
+    iconst_1
+    if_icmpne label2
+    iinc 1 2
+    goto label2
+label0:
+    iinc 1 10
+label2:
+    iload_1
+    iconst_3
+    iadd
+    istore_0
+    iload_0
+    iconst_3
+    if_icmpne label3
+    iinc 0 4
+label3:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_0
+    iconst_5
+    iadd
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+
+.method public multi_ret(I)I
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_1
+    if_icmpne label0
+    iconst_2
+    ireturn
+label0:
+    iconst_3
+    ireturn
+.end method
+
+.method public one_while(I)V
+    .limit stack 2
+    .limit locals 2
+label1:
+    iload_1
+    iconst_5
+    if_icmpne label0
+    iinc 1 1
+    goto label1
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+
+.method public two_while(I)V
+    .limit stack 2
+    .limit locals 2
+label1:
+    iload_1
+    iconst_5
+    if_icmpne label0
+    iinc 1 1
+    goto label1
+label0:
+    iload_1
+    bipush 7
+    if_icmpne label2
+    iinc 1 1
+    goto label0
+label2:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+
+.method public nested_while(I)V
+    .limit stack 2
+    .limit locals 2
+label1:
+    iload_1
+    iconst_5
+    if_icmpne label0
+label2:
+    iload_1
+    bipush 12
+    if_icmpne label1
+    iinc 1 1
+    goto label2
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+
+.method public one_exit(I)V
+    .limit stack 1
+    .limit locals 2
+    iconst_3
+    invokestatic java/lang/System/exit(I)V
+    return
+.end method
+
+.method public two_exits(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_1
+    if_icmpne label0
+    iconst_0
+    invokestatic java/lang/System/exit(I)V
+    goto label1
+label0:
+    iconst_2
+    invokestatic java/lang/System/exit(I)V
+label1:
+    return
+.end method
+
+.method public func_month(I)V
+    .limit stack 2
+    .limit locals 2
+    aconst_null
+    astore_0
+    iload_1
+    tableswitch 1 ; high = 3
+      label0
+      label1
+      label2
+    default : label3
+label0:
+    ldc "January"
+    astore_0
+    goto label3
+label1:
+    ldc "February"
+    astore_0
+    goto label3
+label2:
+    ldc "March"
+    astore_0
+label3:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    aload_0
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    return
+.end method
+
+.method public another_example(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_3
+    if_icmpne label0
+label3:
+    iload_1
+    iconst_5
+    if_icmpge label0
+    iload_1
+    iconst_4
+    if_icmpne label1
+    iload_1
+    iconst_1
+    iadd
+    istore_0
+    goto label2
+label1:
+    iload_1
+    iconst_m1
+    iadd
+    istore_0
+label2:
+    iload_0
+    iconst_1
+    iadd
+    istore_1
+    goto label3
+label0:
+    iload_1
+    iconst_4
+    if_icmpne label4
+    goto label4
+label4:
+    return
+.end method
+
+.method public if1(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_2
+    if_icmple label0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+
+.method public if1_alt(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_2
+    if_icmple label0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+label0:
+    return
+.end method
+
+.method public if3(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_2
+    if_icmple label0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    goto label1
+label0:
+    iload_1
+    iconst_5
+    if_icmpge label2
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    goto label1
+label2:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+label1:
+    return
+.end method
+
+.method public straight(I)V
+    .limit stack 2
+    .limit locals 2
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+
+.method public recursion(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_1
+    if_icmpeq label0
+    aload_0
+    iload_1
+    invokevirtual HelloWorld/recursion(I)V
+label0:
+    return
+.end method
+
+.method public recursion2(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_1
+    if_icmpeq label0
+    aload_0
+    iload_1
+    iinc 1 -1
+    invokevirtual HelloWorld/recursion(I)V
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+

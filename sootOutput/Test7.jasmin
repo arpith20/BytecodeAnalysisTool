@@ -1,0 +1,50 @@
+.source Test7.java
+.class  Test7
+.super java/lang/Object
+
+.method  <init>()V
+    .limit stack 1
+    .limit locals 1
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    return
+.end method
+
+.method public static main([Ljava/lang/String;)V
+.throws java.lang.Exception
+    .limit stack 2
+    .limit locals 1
+    new Test7
+    astore_0
+    aload_0
+    invokespecial Test7/<init>()V
+    aload_0
+    iconst_2
+    invokevirtual Test7/simpleif(I)V
+    aload_0
+    iconst_1
+    invokevirtual Test7/simpleif(I)V
+    return
+.end method
+
+.method public simpleif(I)V
+    .limit stack 2
+    .limit locals 2
+    iload_1
+    iconst_2
+    if_icmpne label0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    goto label1
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+label1:
+    return
+.end method
+

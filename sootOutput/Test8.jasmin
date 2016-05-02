@@ -1,0 +1,40 @@
+.source Test8.java
+.class  Test8
+.super java/lang/Object
+
+.method  <init>()V
+    .limit stack 1
+    .limit locals 1
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    return
+.end method
+
+.method public static main([Ljava/lang/String;)V
+.throws java.lang.Exception
+    .limit stack 2
+    .limit locals 1
+    new Test8
+    dup
+    invokespecial Test8/<init>()V
+    iconst_1
+    invokevirtual Test8/one_while(I)V
+    return
+.end method
+
+.method public one_while(I)V
+    .limit stack 2
+    .limit locals 2
+label1:
+    iload_1
+    iconst_5
+    if_icmpgt label0
+    iinc 1 1
+    goto label1
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_1
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+

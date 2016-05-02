@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="bytecode">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="bytecode.classpath">
+        <pathelement location="workspace/bytecode/bin"/>
+        <pathelement location="workspace/bytecode/lib/soot-trunk.jar"/>
+    </path>
+    <path id="tests.classpath">
+        <pathelement location="workspace/bytecode/bin"/>
+        <pathelement location="sootOutput/"/>
+    </path>
+    <target name="init">
+        <mkdir dir="workspace/bytecode/bin"/>
+        <copy includeemptydirs="false" todir="workspace/bytecode/bin">
+            <fileset dir="workspace/bytecode/src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="workspace/bytecode/bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="workspace/bytecode/bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="workspace/bytecode/src"/>
+            <classpath refid="bytecode.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="Bytecode">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp HelloWorld"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+    </target>
+    <target name="testFirst1">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test1"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test1" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst2">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test2"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test2" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst3">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test3"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test3" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst4">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test4"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test4" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst5">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test5"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test5" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst6">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test6"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test6" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst7">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test7"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test7" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst8">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test8"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test8" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst9">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test9"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test9" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst10">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test10"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test10" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst11">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test11"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test11" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst12">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test12"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test12" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst13">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test13"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test13" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst14">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test14"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test14" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst15">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test15"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test15" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst16">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test16"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test16" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst17">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test17"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test17" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst18">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test18"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test18" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst19">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test19"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test19" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testFirst20">
+        <java classname="bytecode.Bytecode" failonerror="true" fork="yes">
+            <arg line="-cp /home/arpith/iisc/ase/exam/bytecode/test1:/home/arpith/iisc/ase/exam/bytecode/workspace/bytecode/bin/:. -pp Test20"/>
+            <classpath refid="bytecode.classpath"/>
+        </java>
+        <java classname="Test20" failonerror="true" fork="yes">
+            <arg line=""/>
+            <classpath refid="tests.classpath"/>
+        </java>
+    </target>
+
+    <target name="testallFirst">
+       
+        <antcall target="testFirst1"/>
+        <antcall target="testFirst2"/>
+        <antcall target="testFirst3"/>
+        <antcall target="testFirst4"/>
+        <antcall target="testFirst5"/>
+        <antcall target="testFirst6"/>
+        <antcall target="testFirst7"/>
+        <antcall target="testFirst8"/>
+        <antcall target="testFirst9"/>
+        <antcall target="testFirst10"/>
+        <antcall target="testFirst11"/>
+        <antcall target="testFirst12"/>
+        <antcall target="testFirst13"/>
+        <antcall target="testFirst14"/>
+        <antcall target="testFirst15"/>
+        <antcall target="testFirst16"/>
+        <antcall target="testFirst17"/>
+        <antcall target="testFirst18"/>
+        <antcall target="testFirst19"/>
+        <antcall target="testFirst20"/>
+        
+    </target>
+</project>

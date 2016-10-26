@@ -1,0 +1,53 @@
+.source Test18.java
+.class public Test18
+.super java/lang/Object
+
+.inner_class_attr 
+.inner_class_spec_attr "Test18$MyInnerClassDemo" "Test18" "MyInnerClassDemo"  .end .inner_class_spec_attr
+.end .inner_class_attr
+
+.field private "x" I
+
+
+.method public <init>()V
+    .limit stack 2
+    .limit locals 1
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    aload_0
+    iconst_1
+    putfield Test18/x I
+    return
+.end method
+
+.method public innerInstance()V
+    .limit stack 3
+    .limit locals 1
+    new Test18$MyInnerClassDemo
+    dup
+    aload_0
+    invokespecial Test18$MyInnerClassDemo/<init>(LTest18;)V
+    iconst_5
+    invokevirtual Test18$MyInnerClassDemo/seeOuter(I)V
+    return
+.end method
+
+.method public static main([Ljava/lang/String;)V
+    .limit stack 2
+    .limit locals 1
+    new Test18
+    dup
+    invokespecial Test18/<init>()V
+    invokevirtual Test18/innerInstance()V
+    return
+.end method
+
+.method static access$000(LTest18;)I
+.synthetic
+    .limit stack 1
+    .limit locals 1
+    aload_0
+    getfield Test18/x I
+    ireturn
+.end method
+

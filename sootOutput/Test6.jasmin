@@ -1,0 +1,65 @@
+.source Test6.java
+.class public Test6
+.super java/lang/Object
+
+.inner_class_attr 
+.inner_class_spec_attr "Test6$someClass" "Test6" "someClass" public static .end .inner_class_spec_attr
+.end .inner_class_attr
+
+.method public <init>()V
+    .limit stack 1
+    .limit locals 1
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    return
+.end method
+
+.method public static main([Ljava/lang/String;)V
+    .limit stack 4
+    .limit locals 2
+    new Test6$someClass
+    dup
+    invokespecial Test6$someClass/<init>()V
+    bipush 10
+    anewarray java/lang/Object
+    astore_0
+    iconst_3
+    invokevirtual Test6$someClass/func(I)Ljava/lang/Integer;
+    astore_1
+    aload_0
+    iconst_0
+    aload_1
+    aastore
+    aload_0
+    iconst_1
+    new java/util/ArrayList
+    dup
+    invokespecial java/util/ArrayList/<init>()V
+    aastore
+    aload_0
+    iconst_1
+    aaload
+    checkcast java/util/ArrayList
+    aload_0
+    iconst_0
+    aaload
+    checkcast java/lang/Integer
+    invokevirtual java/util/ArrayList/add(Ljava/lang/Object;)Z
+    pop
+    iconst_0
+    istore_1
+label1:
+    iload_1
+    iconst_5
+    if_icmpge label0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    aload_0
+    iload_1
+    aaload
+    invokevirtual java/io/PrintStream/println(Ljava/lang/Object;)V
+    iinc 1 1
+    goto label1
+label0:
+    return
+.end method
+

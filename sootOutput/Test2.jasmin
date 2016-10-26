@@ -1,0 +1,42 @@
+.source Test2.java
+.class public Test2
+.super java/lang/Object
+
+.method public <init>()V
+    .limit stack 1
+    .limit locals 1
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    return
+.end method
+
+.method public static main([Ljava/lang/String;)V
+    .limit stack 2
+    .limit locals 2
+    aload_0
+    iconst_0
+    aaload
+    invokevirtual java/lang/String/length()I
+    istore_0
+label3:
+    iload_0
+    bipush 10
+    if_icmpge label0
+    iconst_0
+    istore_1
+label2:
+    iload_1
+    bipush 10
+    if_icmpge label1
+    iinc 1 1
+    goto label2
+label1:
+    iinc 0 1
+    goto label3
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    iload_0
+    invokevirtual java/io/PrintStream/println(I)V
+    return
+.end method
+

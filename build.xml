@@ -15,6 +15,7 @@
     <path id="tests.classpath">
         <pathelement location="workspace/bytecode/bin"/>
         <pathelement location="sootOutput/"/>
+        <pathelement location="test1/"/>
     </path>
     <target name="init">
         <mkdir dir="workspace/bytecode/bin"/>
@@ -64,7 +65,7 @@
             <classpath refid="bytecode.classpath"/>
         </java>
         <java classname="Test1" failonerror="true" fork="yes">
-            <arg line=""/>
+            <arg line="asdeasdf"/>
             <classpath refid="tests.classpath"/>
         </java>
     </target>
@@ -75,7 +76,7 @@
             <classpath refid="bytecode.classpath"/>
         </java>
         <java classname="Test2" failonerror="true" fork="yes">
-            <arg line=""/>
+            <arg line="asdf"/>
             <classpath refid="tests.classpath"/>
         </java>
     </target>
@@ -86,7 +87,7 @@
             <classpath refid="bytecode.classpath"/>
         </java>
         <java classname="Test3" failonerror="true" fork="yes">
-            <arg line=""/>
+            <arg line="asdf"/>
             <classpath refid="tests.classpath"/>
         </java>
     </target>

@@ -151,7 +151,7 @@ public class Bytecode extends BodyTransformer {
 					break;
 				}
 
-				System.out.println("******" + bytecodeMethod + " IR******");
+				//System.out.println("******" + bytecodeMethod + " IR******");
 				Chain<Unit> units = body.getUnits();
 				Iterator<Unit> stmtIt = units.snapshotIterator();
 				List<Unit> bafLines = Lists.newArrayList(stmtIt);
@@ -287,8 +287,32 @@ public class Bytecode extends BodyTransformer {
 			 * Required for functioning of PrintBytecode.java
 			 */
 			Scene.v().addBasicClass("bytecode.PrintBytecode");
+			Scene.v().addBasicClass("java.lang.System");
+			Scene.v().addBasicClass("xyz.arpith.pathprofiler.MyCounter");
+			Scene.v().addBasicClass("java.util.HashMap");
+			Scene.v().addBasicClass("java.util.HashMap$Node");
+			Scene.v().addBasicClass("java.util.function.Function");
+			Scene.v().addBasicClass("java.util.function.BiFunction");
+			Scene.v().addBasicClass("java.util.function.BiConsumer");
+			Scene.v().addBasicClass("java.util.HashMap$TreeNode");
+			Scene.v().addBasicClass("java.lang.invoke.SerializedLambda");
+			Scene.v().addBasicClass("java.util.function.Predicate");
+			Scene.v().addBasicClass("java.util.stream.Stream");
+			Scene.v().addBasicClass("java.util.Iterator");
+			Scene.v().addBasicClass("java.util.function.Consumer");
+			Scene.v().addBasicClass("java.io.OutputStreamWriter");
+			Scene.v().addBasicClass("java.io.BufferedWriter");
+			Scene.v().addBasicClass("java.io.FileNotFoundException");
+			Scene.v().addBasicClass("java.util.Formatter");
+			Scene.v().addBasicClass("java.io.File");
+			Scene.v().addBasicClass("java.lang.SecurityManager");
+			Scene.v().addBasicClass("java.io.Console");
+			Scene.v().addBasicClass("java.util.Properties");
+			Scene.v().addBasicClass("java.nio.channels.Channel");
+			Scene.v().addBasicClass("java.io.FileOutputStream");
 
 			// Start analysis
+			
 			soot.Main.main(args);
 		}
 	}

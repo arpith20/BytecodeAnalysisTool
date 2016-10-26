@@ -1,0 +1,82 @@
+.source Test10.java
+.class public Test10
+.super java/lang/Object
+
+.inner_class_attr 
+.inner_class_spec_attr "Test10$1" "null" "null" static .end .inner_class_spec_attr
+.end .inner_class_attr
+
+.field public static "arr" [I
+
+
+.method public <init>()V
+    .limit stack 1
+    .limit locals 1
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    return
+.end method
+
+.method public static main([Ljava/lang/String;)V
+.throws java.lang.InterruptedException
+    .limit stack 4
+    .limit locals 2
+    bipush 100
+    anewarray java/lang/Thread
+    astore_0
+    iconst_0
+    istore_1
+label1:
+    iload_1
+    aload_0
+    arraylength
+    if_icmpge label0
+    aload_0
+    iload_1
+    new Test10$1
+    dup
+    invokespecial Test10$1/<init>()V
+    aastore
+    iinc 1 1
+    goto label1
+label0:
+    iconst_0
+    istore_1
+label3:
+    iload_1
+    aload_0
+    arraylength
+    if_icmpge label2
+    aload_0
+    iload_1
+    aaload
+    invokevirtual java/lang/Thread/start()V
+    iinc 1 1
+    goto label3
+label2:
+    iconst_0
+    istore_1
+label5:
+    iload_1
+    aload_0
+    arraylength
+    if_icmpge label4
+    aload_0
+    iload_1
+    aaload
+    invokevirtual java/lang/Thread/join()V
+    iinc 1 1
+    goto label5
+label4:
+    return
+.end method
+
+.method static <clinit>()V
+    .limit stack 1
+    .limit locals 0
+    sipush 10000
+    newarray int
+    putstatic Test10/arr [I
+    return
+.end method
+

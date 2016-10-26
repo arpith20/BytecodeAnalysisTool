@@ -1,0 +1,91 @@
+.source Test17.java
+.class public Test17
+.super java/lang/Object
+
+.method public <init>()V
+    .limit stack 1
+    .limit locals 1
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    return
+.end method
+
+.method public static main([Ljava/lang/String;)V
+.catch java/lang/ArithmeticException from label3 to label4 using label5
+.catch java/lang/ArrayIndexOutOfBoundsException from label0 to label6 using label7
+.catch java/lang/ArithmeticException from label3 to label8 using label9
+.catch java/lang/ArrayIndexOutOfBoundsException from label3 to label8 using label10
+.catch java/lang/Exception from label3 to label8 using label11
+    .limit stack 3
+    .limit locals 1
+label3:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Inside block1"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    bipush 45
+    iconst_0
+    idiv
+    invokevirtual java/io/PrintStream/println(I)V
+label4:
+    goto label0
+label5:
+    astore_0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Exception: e1"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+label0:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Inside block2"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    bipush 45
+    iconst_0
+    idiv
+    invokevirtual java/io/PrintStream/println(I)V
+label6:
+    goto label1
+label7:
+    astore_0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Exception: e2"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+label1:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Just other statement"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+label8:
+    goto label2
+label9:
+    astore_0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Arithmetic Exception"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Inside parent try catch block"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    goto label2
+label10:
+    astore_0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "ArrayIndexOutOfBoundsException"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Inside parent try catch block"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    goto label2
+label11:
+    astore_0
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Exception"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Inside parent try catch block"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+label2:
+    getstatic java/lang/System/out Ljava/io/PrintStream;
+    ldc "Next statement.."
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    return
+.end method
+
